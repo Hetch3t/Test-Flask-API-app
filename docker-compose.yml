@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  flask_app:
+    image: flask_app
+    container_name: flask_db_cap
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo_db
+  mongo_db:
+    image: mongo
+    container_name: mongo_db_cap
+    environment:
+      - MONGO_INITDB_DATABASE=db
+    ports:
+      - 27017:27017
