@@ -6,7 +6,7 @@ from .HackerNewsCrawler import HackerNewsCrawler
 
 class IntervalTimer:
     @staticmethod
-    def start_scanning(m_coll, interval=1200, repeated=True):
+    def start_scanning(m_coll, interval, repeated):
         """
         Scanning thread entrypoint. Default scanning interval is 30m (1800s)
         """

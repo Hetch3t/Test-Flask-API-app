@@ -28,7 +28,7 @@ def init_db(app, host="localhost", port=27017, db="db", coll="posts"):
     app.config["COLLECTION"] = mongo_db[coll]
 
 
-def init_timer(app, interval=1800):
+def init_timer(app, interval=1200):
     """
     Initializing overtime crawler
     """
@@ -39,4 +39,4 @@ def init_timer(app, interval=1800):
     thread.start()
 
 def manual_scan(app):
-    IntervalTimer.start_scanning(app.config["COLLECTION"], repeated=False)
+    IntervalTimer.start_scanning(app.config["COLLECTION"], interval=0, repeated=False)
