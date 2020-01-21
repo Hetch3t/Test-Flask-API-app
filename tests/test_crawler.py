@@ -3,8 +3,8 @@ import json
 import pytest
 import pymongo
 
-from app.classes.Crawler import HackerNewsCrawler
-from app.classes.Post import Post
+from classes.HackerNewsCrawler import HackerNewsCrawler
+from classes.Post import Post
 
 def test_crawler():
     client = pymongo.MongoClient(host="localhost", port=27017)

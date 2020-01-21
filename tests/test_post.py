@@ -4,7 +4,7 @@ from datetime import datetime
 import pytest
 from bs4 import BeautifulSoup
 
-from app.classes.Post import Post
+from classes.Post import Post
 
 
 def test_initialization():
