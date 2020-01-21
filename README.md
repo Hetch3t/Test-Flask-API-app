@@ -22,9 +22,10 @@ Test Flask app, that crawls https://news.ycombinator.com.
 ### API endpoints:
 
 - `GET /posts` - retrieve saved posts. Parameters:
-  - `order` - how to sort posts (default: '\_id');
-  - `offset` - offset to start from (default: 0);
-  - `limit` - limits number of returned posts (default: 5);
+  - `order [_id|created|title|url]` - how to sort posts (default: '\_id');
+  - `order_direction [asc|desc]` - direction of sorting (default: 'asc');
+  - `offset <int>` - offset to start from (default: 0);
+  - `limit <int>` - limits number of returned posts (default: 5);
 
 #### Additional info:
 
@@ -36,7 +37,7 @@ Test Flask app, that crawls https://news.ycombinator.com.
     - `_id`
     - `created`
 - `title` and `url` fields are stripped.
-- If `url` is relevant (leads to the same website) - it is converted to absolute path.
+- If `url` contains relevant path (leads to the same website) - it is converted to absolute path.
 ---
 
 ## To run tests
