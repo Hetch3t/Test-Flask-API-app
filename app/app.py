@@ -1,10 +1,11 @@
-from threading import Thread
-
+import pymongo
 from flask import Flask, jsonify, request
-from pymongo import ASCENDING, MongoClient
-from classes.Timer import IntervalTimer
 
-app = Flask(__name__)
+from setup import app_factory, init_db, init_timer
+
+
+app = app_factory()
+
 
 @app.route("/posts")
 def index():
@@ -12,23 +13,33 @@ def index():
         offset: int = request.args.get("offset", default=0, type=int)
         limit: int = request.args.get("limit", default=5, type=int)
         order: str = request.args.get("order", default="_id", type=str)
+        order_direction_str: str = request.args.get(
+            "order_direction", default="asc", type=str
+        )
 
+        if order_direction_str == "desc":
+            order_direction = pymongo.DESCENDING
+        else:
+            # default behaviour
+            order_direction = pymongo.ASCENDING
     except:
-        return "Error in parameters."
+        return "Error in parameters.", 400
 
-    docs = list(mongo_collection.find().sort(order).skip(offset).limit(limit))
-
-    return jsonify(docs)
-
-def init_db(host="localhost"):
-    mongo_client = MongoClient(host, port=27017)
-    mongo_db = mongo_client.db
-    return mongo_db.posts
+    try:
+        docs = list(
+            app.config["COLLECTION"]
+            .find()
+            .sort([(order, order_direction)])
+            .skip(offset)
+            .limit(limit)
+        )
+        return jsonify(docs)
+    except:
+        return "Error during reading from database.", 400
 
 
 if __name__ == "__main__":
-    mongo_collection = init_db('mongo_db')
-    thread = Thread(target=IntervalTimer.start_scanning, args=[mongo_collection])
-    thread.start()
+    init_db(app, host="mongo_db")
+    init_timer(app)
 
     app.run(port=3000, host="0.0.0.0")
